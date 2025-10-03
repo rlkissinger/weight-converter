@@ -65,15 +65,10 @@
       </div>
     </div>
     <script>
-      // Set output to hidden
       document.getElementById("output").style.visibility = "hidden";
 
-      // Get the conversion type from select box
       let conversion = document.getElementById("conversionSelect");
 
-      // When the conversion select is changed
-      // Update the placeholder text for the input
-      // Reset the output to nothing
       document
         .getElementById("conversionSelect")
         .addEventListener("change", function (e) {
@@ -85,10 +80,6 @@
           updateOutput(conversion.value, value);
         });
 
-      // When the input is changed
-      // set the outputs to visible
-      // Grab the input value
-      // Determine which conversion to perform and update the outputs
       document
         .getElementById("conversionInput")
         .addEventListener("input", function (e) {
