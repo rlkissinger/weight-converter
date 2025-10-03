@@ -27,14 +27,24 @@
           <form>
             <div class="form-group">
               <input
-                id="lbsInput"
+                id="conversionInput"
                 type="number"
-                class="form-control form-control-lg"
+                class="form-control form-control-lg mb-3"
                 placeholder="Enter Pounds"
               />
+              <select name="Conversions" id="conversionSelect">
+                <option value="pounds">Pounds</option>
+                <option value="kilograms">Kilograms</option>
+                <option value="ounces">Ounces</option>
+              </select>
             </div>
           </form>
           <div id="output">
+            <div class="card bg-primary mb-2 p-2">
+              <div class="card-block"></div>
+              <h4>Pounds:</h4>
+              <div id="poundsOutput"></div>
+            </div>
             <div class="card bg-primary mb-2 p-2">
               <div class="card-block"></div>
               <h4>Grams:</h4>
@@ -55,16 +65,61 @@
       </div>
     </div>
     <script>
+      // Set output to hidden
       document.getElementById("output").style.visibility = "hidden";
+
+      // Get the conversion type from select box
+      let conversion = document.getElementById("conversionSelect");
+
+      // When the conversion select is changed
+      // Update the placeholder text for the input
+      // Reset the output to nothing
       document
-        .getElementById("lbsInput")
+        .getElementById("conversionSelect")
+        .addEventListener("change", function (e) {
+          document.getElementById("conversionInput").placeholder =
+            "Enter " +
+            conversion.value.charAt(0).toUpperCase() +
+            conversion.value.slice(1);
+          let value = document.getElementById("conversionInput").value;
+          updateOutput(conversion.value, value);
+        });
+
+      // When the input is changed
+      // set the outputs to visible
+      // Grab the input value
+      // Determine which conversion to perform and update the outputs
+      document
+        .getElementById("conversionInput")
         .addEventListener("input", function (e) {
           document.getElementById("output").style.visibility = "visible";
-          let lbs = e.target.value;
-          document.getElementById("gramsOutput").innerHTML = lbs / 0.0022046;
-          document.getElementById("kgOutput").innerHTML = lbs / 2.2046;
-          document.getElementById("ozOutput").innerHTML = lbs * 16;
+          let value = e.target.value;
+          updateOutput(conversion.value, value);
         });
+
+      function updateOutput(conversion, value) {
+        switch (conversion) {
+          case "pounds":
+            document.getElementById("poundsOutput").innerHTML = value;
+            document.getElementById("gramsOutput").innerHTML =
+              value / 0.0022046;
+            document.getElementById("kgOutput").innerHTML = value / 2.2046;
+            document.getElementById("ozOutput").innerHTML = value * 16;
+            break;
+          case "kilograms":
+            document.getElementById("kgOutput").innerHTML = value;
+            document.getElementById("gramsOutput").innerHTML = value * 1000;
+            document.getElementById("poundsOutput").innerHTML = value * 2.20462;
+            document.getElementById("ozOutput").innerHTML = value * 35.27396195;
+            break;
+          case "ounces":
+            document.getElementById("ozOutput").innerHTML = value;
+            document.getElementById("gramsOutput").innerHTML = value * 28.3495;
+            document.getElementById("kgOutput").innerHTML = value / 35.27396195;
+            document.getElementById("poundsOutput").innerHTML = value / 16;
+            break;
+        }
+      }
     </script>
   </body>
 </html>
